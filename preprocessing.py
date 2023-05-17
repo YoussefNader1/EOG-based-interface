@@ -1,7 +1,7 @@
 import statistics
 import matplotlib.pyplot as plt
 import numpy as np
-# import pandas as pd
+import pandas as pd
 from scipy import signal
 from scipy.signal import butter, filtfilt
 
@@ -31,7 +31,6 @@ def butter_bandpass_filter(Input_Signal, Low_Cutoff, High_Cutoff, Sampling_Rate,
     Numerator, denominator = butter(order, [low, high], btype='band', output='ba', analog=False, fs=None)
     # Passing the 1st Column of data shape (251,) instead of (251,1)
     filtered = filtfilt(Numerator, denominator, Input_Signal)
-
     return filtered
 
 
