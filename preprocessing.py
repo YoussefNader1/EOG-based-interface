@@ -20,17 +20,18 @@ def butter_bandpass_filter(Input_Signal, Low_Cutoff, High_Cutoff, Sampling_Rate,
 
 # 2) Resampling
 def Resampling(filtered_Signal):
-    resampled_Signal = signal.resample(filtered_Signal, 50)
-    plt.figure(figsize=(12, 6))
-    plt.subplot(121)
-    plt.plot(np.arange(0, len(filtered_Signal)), filtered_Signal)
-    plt.xlabel("Time(s)")
-    plt.ylabel("Amp (v)")
-    plt.subplot(122)
-    plt.plot(np.arange(0, len(resampled_Signal)), resampled_Signal)
-    plt.xlabel("Time(s)")
-    plt.ylabel("Amp (v)")
-    plt.show()
+    resampled_Signal = signal.resample(filtered_Signal, 125)
+    return list(resampled_Signal)
+    # plt.figure(figsize=(12, 6))
+    # plt.subplot(121)
+    # plt.plot(np.arange(0, len(filtered_Signal)), filtered_Signal)
+    # plt.xlabel("Time(s)")
+    # plt.ylabel("Amp (v)")
+    # plt.subplot(122)
+    # plt.plot(np.arange(0, len(resampled_Signal)), resampled_Signal)
+    # plt.xlabel("Time(s)")
+    # plt.ylabel("Amp (v)")
+    # plt.show()
 
 
 # 3) DC Remover
@@ -38,7 +39,8 @@ def DC_removal(filtered_Signal):
     DC_signal = [(filtered_Signal[i] + 10) for i in range(len(filtered_Signal))]
     Mean = statistics.mean(DC_signal)
     RemovedDC_signal = [(DC_signal[i] - Mean) for i in range(len(DC_signal))]
-    plt.plot(np.arange(0, len(RemovedDC_signal)), RemovedDC_signal)
-    plt.xlabel("Time (s)")
-    plt.ylabel("Amp (v)")
-    plt.show()
+    return RemovedDC_signal
+    # plt.plot(np.arange(0, len(RemovedDC_signal)), RemovedDC_signal)
+    # plt.xlabel("Time (s)")
+    # plt.ylabel("Amp (v)")
+    # plt.show()
