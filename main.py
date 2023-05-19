@@ -6,18 +6,25 @@ import numpy as np
 import pandas as pd
 from scipy import signal
 from scipy.signal import butter, filtfilt
-import preprocessing as pp
+from sklearn.model_selection import train_test_split
+from sklearn import preprocessing
+from sklearn import metrics
+import signal_preprocessing as pp
+import feature_extraction as fx
+from sklearn import svm
+from sklearn import linear_model
 
 # Read Files
 path = "3-class"
+
+list_of_classes = ["asagi", "kirp", "sag", "sol", "yukari"]  # The classes name we interested in [down, blink, right, left, up]
+
 
 def read_sig(folder_path):
     signals_f = []
     signals_name_f = []
     channel_f = []
-    list_of_classes = ["asagi", "kirp", "sag", "sol", "yukari"]  # The classes name we interested in [down, blink, right, left, up]
     files = os.listdir(path)
-
     for file in files:
         temp_sig = []
         for class_name in list_of_classes:
@@ -42,18 +49,35 @@ resampled_signals = []
 removedDC_component_signals = []
 for i in range(len(signals)):
     # 1- Signals Filtering
-    filtered_signals.append(pp.butter_bandpass_filter(signals[i], Low_Cutoff=0.5, High_Cutoff=20.0, Sampling_Rate=176, order=2))
+    filtered_signals.append(
+        pp.butter_bandpass_filter(signals[i], Low_Cutoff=0.5, High_Cutoff=20.0, Sampling_Rate=176, order=2))
     # 2- Signals resampling
     resampled_signals.append(pp.Resampling(filtered_signals[i]))
     # 3- Signals DC removal
     removedDC_component_signals.append((pp.DC_removal(resampled_signals[i])))
 
-
 # Concatenation
 signals_concat = []
+signals_class_concat = []
 for i in range(0, len(signals), 2):
-    signals_concat.append(removedDC_component_signals[i]+removedDC_component_signals[i+1])
-
+    signals_concat.append(removedDC_component_signals[i] + removedDC_component_signals[i + 1])  # N x 250
+    signals_class_concat.append(signals_name[i])
 
 # Feature Extraction in Time Domain
+# 1- using Auto Regressive
+coefficients = fx.auto_regressive(signals_concat)
 
+# 2- using Max Peak
+# peaks = fx.max_peaks(signals_concat)
+
+Y = pp.encoder(list_of_classes, signals_class_concat)
+
+x_train, x_test, y_train, y_test = train_test_split(signals_concat, Y, test_size=0.20, shuffle=True, random_state=1)
+
+lin_svc = svm.LinearSVC(C=0.001).fit(x_train, y_train.values.ravel())
+prediction = lin_svc.predict(x_test)
+print("Accuracy linear:", metrics.accuracy_score(y_test, prediction))
+print('R2 Score', metrics.r2_score(y_test, prediction))
+print('Mean Square Error', metrics.mean_squared_error(y_test, prediction))
+LRG = linear_model.LogisticRegression(random_state=0, solver='liblinear').fit(x_train, y_train.values.ravel())
+prediction = lin_svc.predict(x_test)
