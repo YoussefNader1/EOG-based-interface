@@ -1,4 +1,5 @@
 import tkinter as tk
+import testing_script as ts
 
 # Create the main window
 root = tk.Tk()
@@ -31,13 +32,10 @@ def open_window():
     second_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     # Define some subdued colors for the buttons
-    red = "#FF0000"
-    green = "#a6df9a"
+    red = "#F08080"
     blue = "#1E90FF"
-    yellow = "#ffea8b"
-    purple = "#d18bff"
 
-    # Create the four buttons in the second window
+    # Create the five buttons in the second window
     top = tk.Button(second_window, text="Top", width=10, height=2, fg="white", bg=blue)
     left = tk.Button(second_window, text="Left", width=10, height=2, fg="white", bg=blue)
     down = tk.Button(second_window, text="Down", width=10, height=2, fg="white", bg=blue)
@@ -63,30 +61,28 @@ def open_window():
         root.destroy()
         second_window.destroy()
 
-    # Bind the closing event of the second window to the close_window function
+    # Bind the closing event of the second windowto the close_window function
     second_window.protocol("WM_DELETE_WINDOW", close_window)
 
-    def flash_button(button):
-        # Toggle the background color of the button
-        if button["bg"] == red:
-            button["bg"] = blue
-        else:
-            button["bg"] = red
-        # Schedule the next function call after 500 milliseconds
-        second_window.after(200, flash_button, button)
+    def blink_button(button):
+        button.config(bg=red)
+        second_window.after(500, lambda: button.config(bg=blue))
 
-    # Start the button flashing
-    output = 'blink'
-    if output == 'top':
-        flash_button(top)
-    elif output == 'left':
-        flash_button(left)
-    elif output == 'down':
-        flash_button(down)
-    elif output == 'right':
-        flash_button(right)
-    elif output == 'blink':
-        flash_button(blink)
+    # f = ['down','right','top','left' , 'left','blink']
+    output = ts.orders
+    i = 0
+    for button_name in output:
+        i += 1
+        if button_name == 'top':
+            second_window.after(1000*i, lambda: blink_button(top))
+        elif button_name == 'left':
+            second_window.after(1000*i, lambda: blink_button(left))
+        elif button_name == 'down':
+            second_window.after(1000*i, lambda: blink_button(down))
+        elif button_name == 'right':
+            second_window.after(1000*i, lambda: blink_button(right))
+        elif button_name == 'blink':
+            second_window.after(1000*i, lambda: blink_button(blink))
 
 
 # Create the button in the main window
