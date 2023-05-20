@@ -47,21 +47,23 @@ def decision_tree(x_train, y_train, x_test, y_test, feature_name):
 
 
 def random_forest(x_train, y_train, x_test, y_test, feature_name):
-    if not os.path.exists('rf_model.pkl'):
+    filename = 'rf_model' + feature_name + '.pkl'
+    if not os.path.exists(filename):
         # Define a Random Forest classifier with 100 trees
         rfc = RandomForestClassifier(n_estimators=100, random_state=1)
 
         # Train the classifier on the training data
+
         rfc.fit(x_train, y_train)
-        with open('rf_model.pkl', 'wb') as file:
+        with open(filename, 'wb') as file:
             pickle.dump(rfc, file)
         print('Model saved successfully.')
     else:
         print('Model file already exists.')
 
     # Load the model if the file exists
-    if os.path.exists('rf_model.pkl'):
-        with open('rf_model.pkl', 'rb') as file:
+    if os.path.exists(filename):
+        with open(filename, 'rb') as file:
             rf_model = pickle.load(file)
             # Make predictions on the testing data
         y_pred = rf_model.predict(x_test)

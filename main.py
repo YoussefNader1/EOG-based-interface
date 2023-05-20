@@ -67,7 +67,7 @@ signal_normalized = pp.signal_normalize(removedDC_component_signals)
 
 # Feature Extraction in Time Domain
 # 1- using Auto Regressive
-coefficients = fx.auto_regressive(signal_normalized)
+# coefficients = fx.auto_regressive(signal_normalized)
 
 # 2- using Max Peak
 # peaks = fx.max_peak_values(signal_normalized)
@@ -77,10 +77,10 @@ coefficients = fx.auto_regressive(signal_normalized)
 # ww = fx.wavelet_features(signal_normalized)
 
 # 4 - PSD
-# PSD_coeff = fx.psd_features(signal_normalized)
+PSD_coeff = fx.psd_features(signal_normalized)
 
 Y = pp.encoder(list_of_classes, signals_class_concat)
 
-x_train, x_test, y_train, y_test = train_test_split(coefficients, Y, test_size=0.20, shuffle=True, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(PSD_coeff, Y, test_size=0.20, shuffle=True, random_state=42)
 
-m.random_forest(x_train, y_train, x_test, y_test, "auto")
+m.random_forest(x_train, y_train, x_test, y_test, "PSD")
