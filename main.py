@@ -1,14 +1,6 @@
 # Imports
 import os
-import statistics
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-from scipy import signal
-from scipy.signal import butter, filtfilt
 from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
-from sklearn import metrics
 import signal_preprocessing as pp
 import feature_extraction as fx
 import models as m

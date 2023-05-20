@@ -1,16 +1,7 @@
 import os
-
-from sklearn import svm
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
-import tensorflow as tf
 from sklearn.preprocessing import LabelEncoder
-from keras.utils import to_categorical
-from keras.models import Sequential
-from keras.layers import Dense
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score

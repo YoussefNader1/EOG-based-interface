@@ -1,7 +1,5 @@
 import statistics
-import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from scipy import signal
 from scipy.signal import butter, filtfilt
 from sklearn import preprocessing
