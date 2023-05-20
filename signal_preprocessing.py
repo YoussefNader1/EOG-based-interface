@@ -26,7 +26,7 @@ def butter_bandpass_filter(Input_Signal, Low_Cutoff, High_Cutoff, Sampling_Rate,
 
 # 2) Resampling
 def Resampling(filtered_Signal):
-    resampled_Signal = signal.resample(filtered_Signal, 125)
+    resampled_Signal = signal.resample(filtered_Signal, 80)
     return list(resampled_Signal)
 
 

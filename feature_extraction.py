@@ -14,7 +14,7 @@ from scipy import signal
 def auto_regressive(signals):
     signal_coefficients = []
     for i in range(len(signals)):
-        model = AutoReg(signals[i], lags=10)
+        model = AutoReg(signals[i], lags=4)
         model_fit = model.fit()
         signal_coefficients.append(list(model_fit.params))
     return signal_coefficients
@@ -42,7 +42,7 @@ def wavelet_features(signals):
     signal_coefficients = []
     for i in range(len(signals)):
         # Apply wavelet transform to each signal
-        coeffs = pywt.wavedec(signals[i], 'db4', level=4)
+        coeffs = pywt.wavedec(signals[i], 'db4', level=3)
 
         # Extract features from wavelet coefficients
         features = []
@@ -61,11 +61,11 @@ def wavelet_features(signals):
     return signal_coefficients
 
 
-def psd_features(signals, fs=60):
+def psd_features(signals, fs=50):
     signal_coefficients = []
     for sig in signals:
         # Compute power spectral density using Welch's method
-        f, Pxx = signal.welch(sig, fs=fs, nperseg=256, noverlap=128)
+        f, Pxx = signal.welch(sig, fs=fs, nperseg=70, noverlap=65)
 
         # Extract features from the PSD
         features = []

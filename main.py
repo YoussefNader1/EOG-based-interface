@@ -43,32 +43,31 @@ def read_sig(folder_path):
 
 signals, signals_name, channel = read_sig(path)
 
+signals_concat = []
+signals_class_concat = []
+for i in range(0, len(signals), 2):
+    signals_concat.append(signals[i] + signals[i + 1])  # N x 250 (101 x 250)
+    signals_class_concat.append(signals_name[i])
+
 # preprocessing
 filtered_signals = []
 resampled_signals = []
 removedDC_component_signals = []
-for i in range(len(signals)):
+for i in range(len(signals_concat)):
     # 1- Signals Filtering
     filtered_signals.append(
-        pp.butter_bandpass_filter(signals[i], Low_Cutoff=0.5, High_Cutoff=20.0, Sampling_Rate=176, order=2))
+        pp.butter_bandpass_filter(signals_concat[i], Low_Cutoff=0.5, High_Cutoff=20.0, Sampling_Rate=176, order=2))
     # 2- Signals resampling
     resampled_signals.append(pp.Resampling(filtered_signals[i]))
     # 3- Signals DC removal
     removedDC_component_signals.append((pp.DC_removal(resampled_signals[i])))
 
-# Concatenation of the horizontal and vertical channels into one signal
-signals_concat = []
-signals_class_concat = []
-for i in range(0, len(signals), 2):
-    signals_concat.append(removedDC_component_signals[i] + removedDC_component_signals[i + 1])  # N x 250 (101 x 250)
-    signals_class_concat.append(signals_name[i])
-
-# Normalize the signal (0 -> 1)
-signal_normalized = pp.signal_normalize(signals_concat)
+# Normalize the signal
+signal_normalized = pp.signal_normalize(removedDC_component_signals)
 
 # Feature Extraction in Time Domain
 # 1- using Auto Regressive
-# coefficients = fx.auto_regressive(signal_normalized)
+coefficients = fx.auto_regressive(signal_normalized)
 
 # 2- using Max Peak
 # peaks = fx.max_peak_values(signal_normalized)
@@ -78,10 +77,10 @@ signal_normalized = pp.signal_normalize(signals_concat)
 # ww = fx.wavelet_features(signal_normalized)
 
 # 4 - PSD
-PSD_coeff = fx.psd_features(signal_normalized)
+# PSD_coeff = fx.psd_features(signal_normalized)
 
 Y = pp.encoder(list_of_classes, signals_class_concat)
 
-x_train, x_test, y_train, y_test = train_test_split(PSD_coeff, Y, test_size=0.20, shuffle=True, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(coefficients, Y, test_size=0.20, shuffle=True, random_state=42)
 
-m.random_forest(x_train, y_train, x_test, y_test, "psd")
+m.random_forest(x_train, y_train, x_test, y_test, "auto")
