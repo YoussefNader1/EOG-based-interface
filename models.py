@@ -1,3 +1,5 @@
+import os
+
 from sklearn import svm
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
@@ -45,18 +47,32 @@ def decision_tree(x_train, y_train, x_test, y_test, feature_name):
 
 
 def random_forest(x_train, y_train, x_test, y_test, feature_name):
-    # Define a Random Forest classifier with 100 trees
-    rfc = RandomForestClassifier(n_estimators=100, random_state=1)
+    if not os.path.exists('rf_model.pkl'):
+        # Define a Random Forest classifier with 100 trees
+        rfc = RandomForestClassifier(n_estimators=100, random_state=1)
 
-    # Train the classifier on the training data
-    rfc.fit(x_train, y_train)
+        # Train the classifier on the training data
+        rfc.fit(x_train, y_train)
+        with open('rf_model.pkl', 'wb') as file:
+            pickle.dump(rfc, file)
+        print('Model saved successfully.')
+    else:
+        print('Model file already exists.')
 
-    # Make predictions on the testing data
-    y_pred = rfc.predict(x_test)
+    # Load the model if the file exists
+    if os.path.exists('rf_model.pkl'):
+        with open('rf_model.pkl', 'rb') as file:
+            rf_model = pickle.load(file)
+            # Make predictions on the testing data
+        y_pred = rf_model.predict(x_test)
 
-    # Evaluate the performance of the classifier
-    accuracy = accuracy_score(y_test, y_pred)
-    print('Accuracy random forest using ' + feature_name + ": " + str(accuracy * 100))
+        # Evaluate the performance of the classifier
+        accuracy = accuracy_score(y_test, y_pred)
+        print('Accuracy random forest using ' + feature_name + ": " + str(accuracy * 100))
+
+        print('Model loaded and used for prediction.')
+    else:
+        print('Model file does not exist.')
 
 
 def encode_nn(Y):
