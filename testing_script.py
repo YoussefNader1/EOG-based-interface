@@ -77,17 +77,40 @@ def random_forest_test(x_testing, y_testing, feature_name):
         accuracy = accuracy_score(y_testing, y_pred)
         print('Accuracy random forest using ' + feature_name + ": " + str(accuracy * 100))
         print('Random forest prediction values ', y_pred)
-        print('Random forest prediction values ', y_testing)
-        print(len(y_testing))
+        print('Random forest Real values ', y_testing)
 
         print('Model loaded and used for prediction.')
     else:
         print('Model file does not exist.')
 
+    return y_pred
+
 
 # make prediction
 
+"""
+0 -> asagi -> down
+1 -> krip -> blink
+2 -> sag -> right
+3 -> sol -> left
+4 -> yukari -> up
+"""
 
-random_forest_test(coefficients, Y, "coef")
+prediction = random_forest_test(coefficients, Y, "coef")
 
 # we will get class name (up ,down ,right ,left)
+orders = []
+
+for i in prediction:
+    if i == 0:
+        orders.append('down')
+    if i == 1:
+        orders.append('blink')
+    if i == 2:
+        orders.append('right')
+    if i == 3:
+        orders.append('left')
+    if i == 4:
+        orders.append('top')
+
+print(orders)
