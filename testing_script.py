@@ -6,12 +6,32 @@ import signal_preprocessing as pp
 import feature_extraction as fx
 
 # read data
-x_test = []
-y_test = []
 
-path = 'testing_data'
+folder_path = 'testing_data'
 
-signals, signals_name, channel = main.read_sig(path)
+
+def read_sig(path):
+    signals_f = []
+    signals_name_f = []
+    channel_f = []
+    files = os.listdir(path)
+    for file in files:
+        temp_sig = []
+        for class_name in main.list_of_classes:
+            if file.startswith(class_name):
+                name = file.split('.')
+                channel_f.append(name[0][-1])  # list ['h' , 'v' , 'h' ,'v' , .....]
+                with open(path + "\\" + file, 'r') as f:
+                    for line in f:
+                        s = line.strip()  # Remove the newline character
+                        temp_sig.append(int(s))
+                signals_f.append(temp_sig)  # list of signals N x 251 where N is number of signals in 3-class file
+                signals_name_f.append(class_name)  # signal class ("asagi", "kirp", "sag", "sol", "yukari")
+                break
+    return signals_f, signals_name_f, channel_f
+
+
+signals, signals_name, channel = read_sig(folder_path)
 
 signals_concat = []
 signals_class_concat = []
@@ -57,7 +77,8 @@ def random_forest_test(x_testing, y_testing, feature_name):
         accuracy = accuracy_score(y_testing, y_pred)
         print('Accuracy random forest using ' + feature_name + ": " + str(accuracy * 100))
         print('Random forest prediction values ', y_pred)
-        print('Random forest prediction values ', y_test)
+        print('Random forest prediction values ', y_testing)
+        print(len(y_testing))
 
         print('Model loaded and used for prediction.')
     else:

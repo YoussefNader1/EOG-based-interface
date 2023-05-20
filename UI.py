@@ -18,6 +18,7 @@ y = (screen_height - window_height) // 2
 # Set the position and size of the main window to center it
 root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
+
 # Define a function to open the second window
 def open_window():
     # Hide the root window
@@ -73,7 +74,6 @@ def open_window():
             button["bg"] = red
         # Schedule the next function call after 500 milliseconds
         second_window.after(200, flash_button, button)
-
 
     # Start the button flashing
     output = 'blink'
