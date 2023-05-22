@@ -2,6 +2,7 @@ import pickle
 import os
 from sklearn.metrics import accuracy_score
 import main
+from sklearn.tree import DecisionTreeClassifier
 import signal_preprocessing as pp
 import feature_extraction as fx
 
@@ -65,7 +66,7 @@ Y = pp.encoder(main.list_of_classes, signals_class_concat)
 # load the model
 def random_forest_test(x_testing, y_testing, feature_name):
     filename = 'rf_model' + feature_name + '.pkl'
-
+    y_pred = []
     # Load the model if the file exists
     if os.path.exists(filename):
         with open(filename, 'rb') as file:
@@ -79,6 +80,27 @@ def random_forest_test(x_testing, y_testing, feature_name):
         print('Random forest prediction values ', y_pred)
         print('Random forest Real values ', y_testing)
 
+        print('Model loaded and used for prediction.')
+    else:
+        print('Model file does not exist.')
+
+    return y_pred
+
+
+def decision_tree(x_test, y_test, feature_name):
+    filename = 'DT_model' + feature_name + '.pkl'
+    y_pred = []
+    # Load the model if the file exists
+    if os.path.exists(filename):
+        with open(filename, 'rb') as file:
+            tree = pickle.load(file)
+
+        # Make predictions on new data
+        y_pred = tree.predict(x_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        print('Accuracy DT using ' + feature_name + ": " + str(accuracy * 100))
+        print('Decision tree prediction values ', y_pred)
+        print('Decision tree Real values ', accuracy)
         print('Model loaded and used for prediction.')
     else:
         print('Model file does not exist.')
