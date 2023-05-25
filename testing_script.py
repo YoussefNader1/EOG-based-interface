@@ -2,7 +2,6 @@ import pickle
 import os
 from sklearn.metrics import accuracy_score
 import main
-from sklearn.tree import DecisionTreeClassifier
 import signal_preprocessing as pp
 import feature_extraction as fx
 
