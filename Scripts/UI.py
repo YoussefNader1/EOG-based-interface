@@ -98,7 +98,7 @@ root.rowconfigure(0, weight=1)
 root.title("Main window")
 
 # Set window icon
-root.iconbitmap(r"Assets/Logo.ico")
+root.iconbitmap(r"../Assets/Logo.ico")
 
 # Run the main loop
 root.mainloop()

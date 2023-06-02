@@ -7,7 +7,7 @@ import feature_extraction as fx
 
 # read data
 
-folder_path = 'testing_data'
+folder_path = os.path.abspath("../testing_data")
 
 
 def read_sig(path):
