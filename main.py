@@ -41,6 +41,9 @@ for i in range(0, len(signals), 2):
     signals_concat.append(signals[i] + signals[i + 1])  # N x 250 (101 x 250)
     signals_class_concat.append(signals_name[i])
 
+'''
+recompute the sampling rate
+'''
 # preprocessing
 filtered_signals = []
 resampled_signals = []

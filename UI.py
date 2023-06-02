@@ -9,8 +9,8 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 # Define the size of the main window
-window_width = 500
-window_height = 400
+window_width = 700
+window_height = 600
 
 # Calculate the x and y coordinates for the main window to center it
 x = (screen_width - window_width) // 2
@@ -96,6 +96,9 @@ root.rowconfigure(0, weight=1)
 
 # Set the title of the main window
 root.title("Main window")
+
+# Set window icon
+root.iconbitmap(r"Assets/Logo.ico")
 
 # Run the main loop
 root.mainloop()
