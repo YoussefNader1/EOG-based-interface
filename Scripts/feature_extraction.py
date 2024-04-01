@@ -1,9 +1,14 @@
 from statsmodels.tsa.ar_model import AutoReg
 from scipy.signal import find_peaks
 import pywt
-
 import numpy as np
 from scipy import signal
+
+'''
+    Auto regression is a feature extraction method in time domain
+    It gives accuracy 66.6% with Decision tree
+    It gives accuracy 90.47% with Random forest
+'''
 
 
 def auto_regressive(signals):
@@ -33,6 +38,13 @@ def max_peak_values(signals):
     return Feature1
 
 
+'''
+    Wavelet transform is a feature extraction method in frequency domain
+    It gives accuracy 52.6% with Decision tree
+    It gives accuracy 52.47% with Random forest
+'''
+
+
 def wavelet_features(signals):
     signal_coefficients = []
     for i in range(len(signals)):
@@ -54,6 +66,13 @@ def wavelet_features(signals):
         signal_coefficients.append(features)
 
     return signal_coefficients
+
+
+'''
+    PSD is a feature extraction method in frequency domain
+    It gives accuracy 57.14% with Decision tree
+    It gives accuracy 71.42% with Random forest
+'''
 
 
 def psd_features(signals, fs=50):

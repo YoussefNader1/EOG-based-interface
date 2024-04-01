@@ -6,7 +6,7 @@ import feature_extraction as fx
 import models as m
 
 # Read Files
-path = "3-class"
+path = os.path.abspath("../Data")
 
 list_of_classes = ["asagi", "kirp", "sag", "sol",
                    "yukari"]  # The classes name we interested in [down, blink, right, left, up]
@@ -16,7 +16,7 @@ def read_sig(folder_path):
     signals_f = []
     signals_name_f = []
     channel_f = []
-    files = os.listdir(path)
+    files = os.listdir(folder_path)
     for file in files:
         temp_sig = []
         for class_name in list_of_classes:
@@ -41,6 +41,9 @@ for i in range(0, len(signals), 2):
     signals_concat.append(signals[i] + signals[i + 1])  # N x 250 (101 x 250)
     signals_class_concat.append(signals_name[i])
 
+'''
+recompute the sampling rate
+'''
 # preprocessing
 filtered_signals = []
 resampled_signals = []
