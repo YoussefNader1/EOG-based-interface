@@ -5,6 +5,14 @@ import main
 import signal_preprocessing as pp
 import feature_extraction as fx
 
+
+'''
+accuracy random forest auto reg -> 90.47% 
+date 4/6/2023
+'''
+
+
+
 # read data
 
 folder_path = os.path.abspath("../testing_data")
